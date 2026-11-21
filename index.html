@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#eaf6fc" />
+    <meta name="description" content="نسيم — قصائد تشبه شعورك" />
+    <title>نسيم — قصائد تشبه شعورك</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="sky-haze" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <button class="wordmark" id="brandButton" type="button" aria-label="الرجوع للقصائد">نسيم</button>
+      <button class="favorites-link" id="favoritesLink" type="button">
+        <span>المفضلة</span>
+        <span class="favorite-count" id="favoriteCount">0</span>
+      </button>
+    </header>
+
+    <main id="app" tabindex="-1"></main>
+
+    <template id="privateChatTemplate">
+      <section class="private-chat" data-theme="light">
+        <div class="chat-shell">
+          <div class="private-chat-toolbar">
+            <button class="theme-button" id="themeButton" type="button" aria-label="تبديل المظهر">◐</button>
+          </div>
+          <section class="access-restricted-panel" id="accessRestrictedPanel" aria-labelledby="accessRestrictedTitle" hidden>
+            <div class="panel-mark" aria-hidden="true">✳</div>
+            <h1 id="accessRestrictedTitle">الوصول غير متاح</h1>
+            <p id="accessRestrictedMessage" role="status">يلزم وجود جلسة مشارك سارية لعرض الرسائل.</p>
+          </section>
+
+          <section class="conversation-panel" id="conversationPanel" aria-label="المحادثة الخاصة" hidden>
+            <div class="conversation-heading">
+              <div class="avatar" aria-hidden="true">ن</div>
+              <div class="contact-copy">
+                <h1 id="peerName">محادثة خاصة</h1>
+                <p><span class="online-dot"></span>بينكما فقط</p>
+              </div>
+              <button class="logout-button" id="logoutButton" type="button">خروج آمن</button>
+            </div>
+            <div class="message-area" id="messageArea" aria-live="polite" aria-relevant="additions text">
+              <button class="history-button" id="historyButton" type="button" hidden>عرض الرسائل الأقدم</button>
+              <div class="message-list" id="messageList"></div>
+              <p class="empty-messages" id="emptyMessages" hidden>ابدأ حديثاً جميلاً بكلمة.</p>
+            </div>
+            <form class="composer" id="messageForm">
+              <label class="sr-only" for="messageInput">اكتب رسالتك</label>
+              <textarea id="messageInput" name="body" rows="1" maxlength="4000" placeholder="اكتب رسالة..." required></textarea>
+              <p class="send-error" id="sendError" role="alert" hidden></p>
+              <div class="composer-footer">
+                <span class="typing-status" id="sendingStatus" aria-live="polite"></span>
+                <button class="send-button" id="sendButton" type="submit" aria-label="إرسال الرسالة">
+                  <span>إرسال</span><span aria-hidden="true">↑</span>
+                </button>
+              </div>
+            </form>
+          </section>
+          <p class="page-error" id="pageError" role="alert" hidden></p>
+        </div>
+      </section>
+    </template>
+
+    <nav class="bottom-nav" aria-label="تنقل الموقع">
+      <button class="nav-item active" id="poemsNav" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5.5A2.5 2.5 0 0 1 7.5 3H19v15H7.5A2.5 2.5 0 0 0 5 20.5v-15Z"/><path d="M5 20.5A2.5 2.5 0 0 1 7.5 18H19v3H7.5A2.5 2.5 0 0 1 5 18.5"/></svg>
+        <span>القصائد</span>
+      </button>
+      <button class="nav-item" id="favoritesNav" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78Z"/></svg>
+        <span>أجمل ما أحببت</span>
+      </button>
+    </nav>
+
+    <script src="/chat.js"></script>
+    <script src="/app.js"></script>
+  </body>
+</html>

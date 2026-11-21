@@ -1,0 +1,13 @@
+{
+  "name": "nasim-poetry",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Nasim poetry website with a private two-person chat",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server.js",
+    "test": "node --test"
+  }
+}
