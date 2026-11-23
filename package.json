@@ -3,12 +3,18 @@
   "version": "1.0.0",
   "private": true,
   "description": "Nasim Poetry website and private chat",
-  "main": "server.js",
   "scripts": {
     "start": "node --env-file-if-exists=.env server.js",
+    "db:migrate": "node --env-file-if-exists=.env scripts/migrate-sqlite-to-neon.js",
     "test": "node --test"
   },
   "engines": {
     "node": ">=22.13.0"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.2.1"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.17"
   }
 }

@@ -32,8 +32,18 @@
           </div>
           <section class="access-restricted-panel" id="accessRestrictedPanel" aria-labelledby="accessRestrictedTitle" hidden>
             <div class="panel-mark" aria-hidden="true">✳</div>
-            <h1 id="accessRestrictedTitle">الوصول غير متاح</h1>
-            <p id="accessRestrictedMessage" role="status">يلزم وجود جلسة مشارك سارية لعرض الرسائل.</p>
+            <h1 id="accessRestrictedTitle">دخول المحادثة الخاصة</h1>
+            <p id="accessRestrictedMessage" role="status">أدخل بيانات حسابك ورمز الوصول لإثبات هويتك.</p>
+            <form class="login-form" id="loginForm">
+              <label for="loginUsername">اسم المستخدم</label>
+              <input id="loginUsername" name="username" type="text" autocomplete="username" required />
+              <label for="loginPassword">كلمة المرور</label>
+              <input id="loginPassword" name="password" type="password" autocomplete="current-password" required />
+              <label for="loginAccessCode">رمز الوصول</label>
+              <input id="loginAccessCode" name="accessCode" type="password" autocomplete="one-time-code" required />
+              <p class="login-error" id="loginError" role="alert" hidden></p>
+              <button class="login-button" id="loginButton" type="submit">دخول آمن</button>
+            </form>
           </section>
 
           <section class="conversation-panel" id="conversationPanel" aria-label="المحادثة الخاصة" hidden>
@@ -78,6 +88,7 @@
       </button>
     </nav>
 
+    <script src="/error-messages.js"></script>
     <script src="/chat.js"></script>
     <script src="/app.js"></script>
   </body>

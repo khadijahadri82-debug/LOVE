@@ -6,3 +6,7 @@
 *.bak
 *.backup
 /backups/
+
+node_modules/
+.vercel
+.env*

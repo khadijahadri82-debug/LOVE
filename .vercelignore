@@ -1,0 +1,13 @@
+.env
+.env.*
+data/
+backups/
+*.sqlite*
+*.db*
+*.bak
+*.backup
+server.js
+server.test.js
+scripts/
+migrations/
+README.md

@@ -18,6 +18,10 @@
       "use": "@vercel/static"
     },
     {
+      "src": "error-messages.js",
+      "use": "@vercel/static"
+    },
+    {
       "src": "styles.css",
       "use": "@vercel/static"
     }

@@ -237,7 +237,7 @@ function renderReader(poemId) {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-function renderPrivateChat() {
+function renderPrivateChat(accessCode = "") {
   disposePrivateChat();
   currentView = "chat";
   currentPoemId = null;
@@ -254,7 +254,7 @@ function renderPrivateChat() {
     document.getElementById("pageError").hidden = false;
     return;
   }
-  disposeChat = window.initPrivateChat(chatRoot);
+  disposeChat = window.initPrivateChat(chatRoot, accessCode);
 }
 
 function syncHash() {
@@ -334,14 +334,14 @@ app.addEventListener("submit", async event => {
         body: JSON.stringify({ code: candidate })
       });
       const result = await response.json();
-      if (!response.ok) throw new Error(result.error || "تعذّر التحقق من الرمز.");
+      if (!response.ok) throw new Error(window.getApiErrorMessage(result?.error, "تعذّر التحقق من الرمز. حاول مرة أخرى."));
       if (result.openChat) {
         searchQuery = "";
-        renderPrivateChat();
+        renderPrivateChat(candidate);
         return;
       }
     } catch (error) {
-      searchError.textContent = error.message || "تعذّر التحقق من الرمز. حاول مرة أخرى.";
+      searchError.textContent = window.getApiErrorMessage(error?.message, "تعذّر التحقق من الرمز. حاول مرة أخرى.");
       searchError.hidden = false;
     } finally {
       submitButton.disabled = false;

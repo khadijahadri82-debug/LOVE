@@ -1,6 +1,12 @@
-function initPrivateChat(root) {
+function initPrivateChat(root, initialAccessCode = "") {
   const accessRestrictedPanel = root.querySelector("#accessRestrictedPanel");
   const accessRestrictedMessage = root.querySelector("#accessRestrictedMessage");
+  const loginForm = root.querySelector("#loginForm");
+  const loginUsername = root.querySelector("#loginUsername");
+  const loginPassword = root.querySelector("#loginPassword");
+  const loginAccessCode = root.querySelector("#loginAccessCode");
+  const loginError = root.querySelector("#loginError");
+  const loginButton = root.querySelector("#loginButton");
   const conversationPanel = root.querySelector("#conversationPanel");
   const messageForm = root.querySelector("#messageForm");
   const messageInput = root.querySelector("#messageInput");
@@ -14,6 +20,8 @@ function initPrivateChat(root) {
   const pageError = root.querySelector("#pageError");
   const themeButton = root.querySelector("#themeButton");
   const controller = new AbortController();
+
+  loginAccessCode.value = initialAccessCode;
 
   let csrfToken = "";
   let userId = null;
@@ -64,6 +72,7 @@ function initPrivateChat(root) {
     conversationPanel.hidden = true;
     accessRestrictedMessage.textContent = message;
     accessRestrictedPanel.hidden = false;
+    loginButton.disabled = false;
   }
 
   async function request(url, options = {}) {
@@ -77,7 +86,7 @@ function initPrivateChat(root) {
     } catch {
       throw new Error("تعذّر قراءة استجابة الخادم.");
     }
-    if (!response.ok) throw new Error(result.error || "تعذّر إكمال الطلب.");
+    if (!response.ok) throw new Error(window.getApiErrorMessage(result?.error, "تعذّر إكمال الطلب. حاول مرة أخرى."));
     return result;
   }
 
@@ -222,6 +231,31 @@ function initPrivateChat(root) {
     }
   });
 
+  loginForm.addEventListener("submit", async event => {
+    event.preventDefault();
+    clearError(loginError);
+    loginButton.disabled = true;
+    try {
+      await request("/api/login", {
+        method: "POST",
+        body: JSON.stringify({
+          username: loginUsername.value,
+          password: loginPassword.value,
+          accessCode: loginAccessCode.value
+        })
+      });
+      const session = await request("/api/session");
+      if (!session.authenticated) throw new Error("تعذّر إنشاء الجلسة. تحقق من بيانات الدخول وحاول مجدداً.");
+      await showConversation(session);
+    } catch (error) {
+      if (disposed || error.name === "AbortError") return;
+      showError(loginError, window.getApiErrorMessage(error?.message, "تعذّر تسجيل الدخول. حاول مرة أخرى."));
+    } finally {
+      loginPassword.value = "";
+      loginButton.disabled = false;
+    }
+  });
+
   historyButton.addEventListener("click", async () => {
     if (!hasMore || oldestMessageId === null || isLoadingHistory) return;
     isLoadingHistory = true;
@@ -277,7 +311,7 @@ function initPrivateChat(root) {
     .then(session => {
       if (disposed) return;
       if (session.authenticated) return showConversation(session);
-      restrictAccess("يلزم وجود جلسة مشارك سارية لعرض الرسائل.");
+      restrictAccess("أدخل اسم المستخدم وكلمة المرور ورمز الوصول لتأكيد هويتك.");
     })
     .catch(error => {
       if (disposed || error.name === "AbortError") return;
